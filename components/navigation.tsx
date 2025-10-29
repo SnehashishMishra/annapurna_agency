@@ -25,7 +25,9 @@ export function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">FA</span>
+              <span className="text-white font-bold text-lg">
+                <img src="\Logo.png" alt="Comapny Logo" />
+              </span>
             </div>
             <span className="font-bold text-lg text-primary hidden sm:inline">
               {company_name}
