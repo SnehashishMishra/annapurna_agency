@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import emailjs from "@emailjs/browser";
 
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -32,11 +33,41 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     setSubmitted(true);
-    setTimeout(() => {
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-      setSubmitted(false);
-    }, 3000);
+
+    emailjs
+      .send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      )
+      .then(
+        () => {
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            subject: "",
+            message: "",
+          });
+
+          setTimeout(() => {
+            setSubmitted(false);
+          }, 3000);
+        },
+        (error) => {
+          console.error("Email send failed ❌", error);
+          setSubmitted(false);
+        }
+      );
   };
 
   const contactInfo = [
